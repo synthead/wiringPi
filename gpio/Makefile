@@ -68,14 +68,14 @@ install:
 	@cp gpio		$(DESTDIR)$(PREFIX)/bin
 	@chown root.root	$(DESTDIR)$(PREFIX)/bin/gpio
 	@chmod 4755		$(DESTDIR)$(PREFIX)/bin/gpio
-	@mkdir -p		$(DESTDIR)$(PREFIX)/man/man1
-	@cp gpio.1		$(DESTDIR)$(PREFIX)/man/man1
+	@mkdir -p		$(DESTDIR)$(PREFIX)/share/man/man1
+	@cp gpio.1		$(DESTDIR)$(PREFIX)/share/man/man1
 
 .PHONY:	uninstall
 uninstall:
 	@echo "[UnInstall]"
 	@rm -f $(DESTDIR)$(PREFIX)/bin/gpio
-	@rm -f $(DESTDIR)$(PREFIX)/man/man1/gpio.1
+	@rm -f $(DESTDIR)$(PREFIX)/share/man/man1/gpio.1
 
 .PHONY:	depend
 depend:
