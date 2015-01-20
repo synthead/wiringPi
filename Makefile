@@ -1,7 +1,8 @@
 DYN_VERS_MAJ=2
 DYN_VERS_MIN=0
-
 VERSION=$(DYN_VERS_MAJ).$(DYN_VERS_MIN)
+
+PREFIX=/usr
 
 all:
 	$(MAKE) -C wiringPi
