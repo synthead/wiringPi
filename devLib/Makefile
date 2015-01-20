@@ -60,6 +60,7 @@ $(STATIC):	$(OBJ)
 $(DYNAMIC):	$(OBJ)
 	@echo "[Link (Dynamic)]"
 	@$(CC) -shared -Wl,-soname,libwiringPiDev.so -o libwiringPiDev.so.$(VERSION) -lpthread $(OBJ)
+	@ln -sf libwiringPiDev.so.$(VERSION) libwiringPiDev.so
 
 .c.o:
 	@echo [Compile] $<
