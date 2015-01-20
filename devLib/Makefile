@@ -95,7 +95,6 @@ install:	$(DYNAMIC) install-headers
 	@install -m 0755 -d						$(DESTDIR)$(PREFIX)/lib
 	@install -m 0755 libwiringPiDev.so.$(VERSION)			$(DESTDIR)$(PREFIX)/lib/libwiringPiDev.so.$(VERSION)
 	@ln -sf $(DESTDIR)$(PREFIX)/lib/libwiringPiDev.so.$(VERSION)	$(DESTDIR)/lib/libwiringPiDev.so
-	@ldconfig
 
 .PHONY:	install-static
 install-static:	$(STATIC) install-headers
@@ -115,7 +114,6 @@ uninstall:
 	@rm -f $(DESTDIR)$(PREFIX)/include/lcd.h
 	@rm -f $(DESTDIR)$(PREFIX)/include/piGlow.h
 	@rm -f $(DESTDIR)$(PREFIX)/lib/libwiringPiDev.*
-	@ldconfig
 
 
 .PHONY:	depend
