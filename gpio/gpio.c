@@ -277,7 +277,8 @@ static void doExports (int argc, char *argv [])
   char fName [128] ;
   char buf [16] ;
 
-  for (first = 0, i = 0 ; i < 64 ; ++i)	// Crude, but effective
+  // ODROIDC GPIO Max 128
+  for (first = 0, i = 0 ; i < 128 ; ++i)	// Crude, but effective
   {
 
 // Try to read the direction
@@ -573,7 +574,8 @@ void doUnexportall (char *progName)
   FILE *fd ;
   int pin ;
 
-  for (pin = 0 ; pin < 63 ; ++pin)
+  // ODROIDC GPIO Max 128
+  for (pin = 0 ; pin < 128 ; ++pin)
   {
     if ((fd = fopen ("/sys/class/gpio/unexport", "w")) == NULL)
     {
@@ -626,9 +628,9 @@ static void doReset (char *progName)
 
   piBoardId (&model, &rev, &mem, &maker, &overVolted) ;
 
-  /**/ if ((model == PI_MODEL_A) || (model == PI_MODEL_B))
+  /**/ if ((model == PI_MODEL_A)  || (model == PI_MODEL_B))
     endPin = 16 ;
-  else if (model == PI_MODEL_BP)
+  else if ((model == PI_MODEL_BP) || (model == PI_MODEL_ODROIDC))
     endPin = 39 ;
   else if (model == PI_MODEL_CM)
   {
@@ -1194,11 +1196,17 @@ int main (int argc, char *argv [])
       printf ("    projects@drogon.net\n") ;
       printf ("with a copy of your /proc/cpuinfo if possible\n") ;
     }
+    else if (model == PI_MODEL_ODROIDC)
+    {
+      printf ("Hardkernel ODROID Details:\n") ;
+      printf ("  Type: %s, Revision: %s, Memory: %dMB, Maker: %s\n",
+      piModelNames [model], piRevisionNames [rev], mem, piMakerNames [maker]) ;
+    }
     else
     {
       printf ("Raspberry Pi Details:\n") ;
       printf ("  Type: %s, Revision: %s, Memory: %dMB, Maker: %s %s\n", 
-	  piModelNames [model], piRevisionNames [rev], mem, piMakerNames [maker], overVolted ? "[OV]" : "") ;
+      piModelNames [model], piRevisionNames [rev], mem, piMakerNames [maker], overVolted ? "[OV]" : "") ;
     }
     return 0 ;
   }

@@ -147,6 +147,36 @@ static char *physNames [64] =
    NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,
 } ;
 
+static char *physNamesOdroidc [64] =
+{
+  NULL,
+
+  "    3.3v", "5v      ",
+  "   SDA.1", "5V      ",
+  "   SCL.1", "0v      ",
+  "GPIO. 83", "TxD1    ",
+  "      0v", "RxD1    ",
+  "GPIO. 88", "GPIO. 87",
+  "GPIO.116", "0v      ",
+  "GPIO.115", "GPIO.104",
+  "    3.3v", "GPIO.102",
+  "    MOSI", "0v      ",
+  "    MISO", "GPIO.103",
+  "    SCLK", "CE0     ",
+  "      0v", "GPIO.118",
+  "   SDA.2", "SCL.2   ",
+  "GPIO.101", "0v      ",
+  "GPIO.100", "GPIO. 99",
+  "GPIO.108", "0v      ",
+  "GPIO.97 ", "GPIO. 98",
+  "   AIN.1", "1v8     ",
+  "      0v", "AIN.0   ",
+
+   NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,
+   NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,
+   NULL,NULL,NULL,
+} ;
+
 
 /*
  * readallPhys:
@@ -305,6 +335,77 @@ void piPlusReadall (int model)
     printf (" +-----+-----+---------+------+---+--B Plus--+---+------+---------+-----+-----+\n") ;
 }
 
+static void readallPhysOdroidC (int physPin)
+{
+  int pin ;
+
+  if (physPinToGpio (physPin) == -1)
+    printf (" |      |    ") ;
+  else
+    printf (" |  %3d | %3d", physPinToGpio (physPin), physToWpi [physPin]) ;
+
+  printf (" | %s", physNamesOdroidc [physPin]) ;
+
+  if (physToWpi [physPin] == -1)
+    printf (" |      |  ") ;
+  else
+  {
+    /**/ if (wpMode == WPI_MODE_GPIO)
+      pin = physPinToGpio (physPin) ;
+    else if (wpMode == WPI_MODE_PHYS)
+      pin = physPin ;
+    else
+      pin = physToWpi [physPin] ;
+
+    printf (" | %4s", alts [getAlt (pin)]) ;
+    printf (" | %d", digitalRead (pin)) ;
+  }
+
+// Pin numbers:
+
+  printf (" | %2d", physPin) ;
+  ++physPin ;
+  printf (" || %-2d", physPin) ;
+
+// Same, reversed
+
+  if (physToWpi [physPin] == -1)
+    printf (" |   |     ") ;
+  else
+  {
+    /**/ if (wpMode == WPI_MODE_GPIO)
+      pin = physPinToGpio (physPin) ;
+    else if (wpMode == WPI_MODE_PHYS)
+      pin = physPin ;
+    else
+      pin = physToWpi [physPin] ;
+
+    printf (" | %d", digitalRead (pin)) ;
+    printf (" | %-4s", alts [getAlt (pin)]) ;
+  }
+
+  printf (" | %-6s", physNamesOdroidc [physPin]) ;
+
+  if (physPinToGpio (physPin) == -1)
+    printf (" |     |     ") ;
+  else
+    printf (" | %-3d |  %-3d", physToWpi [physPin], physPinToGpio (physPin)) ;
+
+  printf (" |\n") ;
+}
+
+void ReadallOdroidC (void)
+{
+  int pin ;
+  char *type ;
+
+  printf (" +------+-----+----------+------+- Model ODROID-C -+------+----------+-----+------+\n") ;
+  printf (" | GPIO | wPi |   Name   | Mode | V | Physical | V | Mode |   Name   | wPi | GPIO |\n") ;
+  printf (" +------+-----+----------+------+---+----++----+---+------+----------+-----+------+\n") ;
+  for (pin = 1 ; pin <= 40 ; pin += 2)
+    readallPhysOdroidC (pin) ;
+  printf (" +------+-----+----------+------+---+----++----+---+------+----------+-----+------+\n") ;
+}
 
 void doReadall (void)
 {
@@ -324,6 +425,8 @@ void doReadall (void)
     piPlusReadall (model) ;
   else if (model == PI_MODEL_CM)
     cmReadall () ;
+  else if (model == PI_MODEL_ODROIDC)
+    ReadallOdroidC ();
   else
     printf ("Oops - unable to determine board type... model: %d\n", model) ;
 }
