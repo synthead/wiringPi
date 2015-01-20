@@ -94,7 +94,7 @@ install:	$(DYNAMIC) install-headers
 	@echo "[Install Dynamic Lib]"
 	@install -m 0755 -d						$(DESTDIR)$(PREFIX)/lib
 	@install -m 0755 libwiringPiDev.so.$(VERSION)			$(DESTDIR)$(PREFIX)/lib/libwiringPiDev.so.$(VERSION)
-	@ln -sf $(DESTDIR)$(PREFIX)/lib/libwiringPiDev.so.$(VERSION)	$(DESTDIR)/lib/libwiringPiDev.so
+	@ln -sf libwiringPiDev.so.$(VERSION) $(DESTDIR)$(PREFIX)/lib/libwiringPiDev.so
 
 .PHONY:	install-static
 install-static:	$(STATIC) install-headers
